@@ -1,6 +1,6 @@
 # SwiftArmyKnife
 
-收录常用的工具方法，提高生产效率。支持面向对象及函数式编程范式，故同一个功能存在多种用法，选择最适合你团队的即可。
+收录常用的工具方法，提高生产效率。支持面向对象及函数式编程范式，故同一个功能存在多种用法，选择最适合你团队的即可。文档说明在最后面。
 
 ## 使用
 
@@ -18,34 +18,9 @@
 
 由于现在是初始版本，暂不支持CocoaPods，可能以后也不支持，原因是这些常用方法如果每次都写`import SwiftArmyKnife`也是件麻烦事，拷贝进来则直接调用，省去不必要的`import SwiftArmyKnife`。
 
-## 文档
-
-预计会存在数量可观的方法，每个都写详细用法，工作量较大，我倾向于就一些不直观的方法写出详细用法。下面是正式使用文档。
-
-### NSUserDefaults
-
-#### 链式编程
-
-```swift
-NSUserDefaults.defaultsSetValue(123, forKey: "helloInt")
-    .defaultsSetValue(123.0, forKey: "helloDouble")
-    .defaultsSynchronize()
-```
-
-#### 函数式编程
-
-```swift
-let stdStore =
-    standardUserDefaultsSetValue(true, forKey: "testCaseForStoreBool") >>>
-        standardUserDefaultsSetValue("string for test", forKey: "testCaseForStoreString") >>>
-            standardUserDefaultsSetValue(123, forKey: "testCaseForStoreInt")
-
-stdStore(NSUserDefaults.standardUserDefaults()).synchronize()
-```
-
 ## 参与
 
-登陆GitHub，点击项目右上角 Fork 按钮，终端中输入git clone 你的副本地址（如https://github.com/你的用户名/SwiftArmyKnife），在本地修改后，提交到远程，我到时合并进来。
+登陆GitHub，点击项目右上角 Fork 按钮，终端中输入git clone 你的副本地址（如`git clone https://github.com/你的用户名/SwiftArmyKnife`），在本地修改后，提交到远程，我到时合并进来。
 
 ## 致谢
 
@@ -80,4 +55,28 @@ stdStore(NSUserDefaults.standardUserDefaults()).synchronize()
 // THE SOFTWARE.
 ```
 
+## 文档
+
+预计会存在数量可观的方法，每个都写详细用法，工作量较大，我倾向于就一些不直观的方法写出详细用法。下面是正式使用文档。
+
+### NSUserDefaults
+
+#### 链式编程
+
+```swift
+NSUserDefaults.defaultsSetValue(123, forKey: "helloInt")
+    .defaultsSetValue(123.0, forKey: "helloDouble")
+    .defaultsSynchronize()
+```
+
+#### 函数式编程
+
+```swift
+let stdStore =
+    standardUserDefaultsSetValue(true, forKey: "testCaseForStoreBool") >>>
+        standardUserDefaultsSetValue("string for test", forKey: "testCaseForStoreString") >>>
+            standardUserDefaultsSetValue(123, forKey: "testCaseForStoreInt")
+
+stdStore(NSUserDefaults.standardUserDefaults()).synchronize()
+```
 
