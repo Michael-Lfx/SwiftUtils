@@ -11,7 +11,7 @@
 ```
 |-  Extensions：常规拓展
 |-  Controls：常用控件
-|-  FunctionalProgramming：函数式拓展
+|-  FunctionalProgrammingExtensions：函数式拓展
 ```
 
 ##  未来
