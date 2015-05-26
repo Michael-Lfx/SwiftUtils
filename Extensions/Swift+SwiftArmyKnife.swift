@@ -30,4 +30,13 @@ extension String {
     var length: Int {
         return count(self)
     }
+    
+    // MARK: 验证
+    
+    var isValidEmailAddress: Bool {
+        let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        return predicate.evaluateWithObject(self)
+    }
+
 }
