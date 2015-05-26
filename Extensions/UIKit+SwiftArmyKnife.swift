@@ -111,6 +111,8 @@ extension UIColor {
         return label.textColor
     }
     
+    // MARK: 常用颜色
+    
     class var lightOrange: UIColor {
         return UIColor(red: 0.996, green: 0.467, blue: 0.224, alpha: 1)
     }
@@ -123,10 +125,36 @@ extension UIColor {
         return UIColor(red: 0.7, green: 0.2, blue: 0.1, alpha: 1)
     }
     
-    class var green: UIColor {
-        return UIColor(red: 0.251, green: 0.831, blue: 0.494, alpha: 1)
+}
+
+// MARK: HSV - 六角锥体模型（Hexcone Model）
+
+struct HSV: Equatable, Printable {
+    
+    var hue: Int
+    var saturation: Int
+    var value: Int
+    
+    static var HSVZero: HSV {
+        let zero = HSV(hue: 0, saturation: 0, value: 0)
+        return zero
     }
     
+    static func hsvFromString(hsvString: String) -> HSV {
+        let components = hsvString.componentsSeparatedByString(", ")
+        if components.count != 3 {
+            return HSVZero
+        }
+        return HSV(hue: components[0].toInt()!, saturation: components[1].toInt()!, value: components[2].toInt()!)
+    }
+    
+    var description: String {
+        return "\(hue), \(saturation), \(value)"
+    }
+}
+
+func ==(lhs: HSV, rhs: HSV) -> Bool {
+    return (lhs.hue == rhs.hue) && (lhs.saturation == rhs.saturation) && (lhs.value == rhs.value)
 }
 
 extension UIView {
@@ -139,7 +167,7 @@ extension UIView {
     */
     var frameWidth: CGFloat {
         get {
-            return self.frame.width
+            return frame.width
         }
         set {
             var frame = self.frame
@@ -156,7 +184,7 @@ extension UIView {
     */
     var frameHeight: CGFloat {
         get {
-            return self.frame.height
+            return frame.height
         }
         set {
             var frame = self.frame
@@ -178,7 +206,7 @@ extension UIView {
             self.frame = frame
         }
         get {
-            return self.frame.originX
+            return frame.originX
         }
     }
     
@@ -188,10 +216,15 @@ extension UIView {
     :param: originY y坐标值.
     
     */
-    func setFrameOriginY(originY: CGFloat) {
-        var frame = self.frame
-        frame.origin.y = originY
-        self.frame = frame
+    var frameOriginY: CGFloat {
+        set {
+            var frame = self.frame
+            frame.origin.x = newValue
+            self.frame = frame
+        }
+        get {
+            return frame.originY
+        }
     }
     
     // MARK: 动画
@@ -206,16 +239,6 @@ extension UIView {
         shakeAnimation.duration = duration
         shakeAnimation.repeatCount = repeatCount
         layer.addAnimation(shakeAnimation, forKey: "shakeAnimation")
-    }
-    
-    func shakeAnimationReferenceImp() {
-        let animation = CAKeyframeAnimation()
-        animation.keyPath = "position.x"
-        animation.values = [0, 10, -10, 10, 0]
-        animation.keyTimes = [0, 1/6.0, 3/6.0, 5/6.0, 1]
-        animation.duration = 0.2
-        animation.additive = true
-        layer.addAnimation(animation, forKey: "shake")
     }
     
 }

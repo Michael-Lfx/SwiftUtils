@@ -78,8 +78,8 @@ func compositeSourceOver(overlay: CIImage) -> Filter {
 */
 func colorOverlay(color: UIColor) -> Filter {
     return { inputImage in
-        let overlay = self.colorGenerator(color)(inputImage)
-        return self.compositeSourceOver(overlay)(inputImage)
+        let overlay = colorGenerator(color)(inputImage)
+        return compositeSourceOver(overlay)(inputImage)
     }
 }
 
