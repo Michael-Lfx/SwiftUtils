@@ -10,8 +10,27 @@
 
 ```
 |-  Extensions：常规拓展
+    |-  UIKit+SwiftArmyKnife.swift
 |-  Controls：常用控件
-|-  FunctionalProgrammingExtensions：函数式拓展
+    |-  SAKCopyableLabel.swift
+|-  FunctionalExtensions：函数式编程范式拓展
+    |-  CoreImage+SwiftArmyKnifeFunc
+```
+
+文件参考上述形式命名。注释风格参考下面形式：
+
+```swift
+/**
+管道运算符，fooX >>> footY表示fooX(a)的输出为fooY(b)的输入，类似UNIX管道
+
+:param: lhs 函数fooX
+:param: rhs 函数fooY
+
+:returns: 接收footX输入参数且返回值为fooY输出的函数
+*/
+func >>> <T, U, V>(lhs: T -> U, rhs: U -> V) -> (T -> V) {
+    return { x in rhs(lhs(x)) }
+}
 ```
 
 ##  讨论

@@ -336,3 +336,19 @@ extension CATransaction {
     }
     
 }
+
+extension UITableView {
+    
+    func hideExtraCellSeparateLine() {
+        struct Static {
+            static var blankView: UIView? = nil
+            static var onceToken: dispatch_once_t = 0
+        }
+        dispatch_once(&Static.onceToken) { () -> Void in
+            Static.blankView = UIView()
+            Static.blankView!.backgroundColor = UIColor.clearColor()
+        }
+
+        tableFooterView = Static.blankView
+    }
+}
