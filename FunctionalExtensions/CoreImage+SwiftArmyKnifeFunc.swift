@@ -94,8 +94,8 @@ func colorControls(brightness: Float = 0, contrast: Float = 1, saturation: Float
 /**
 放大模糊（CIZoomBlur）
 
-:param: brightness 亮度，默认值[150 150]
-:param: contrast 对比度，有效范围[0, 200]
+:param: center 模糊中心点
+:param: radius 模糊半径
 
 :returns: Filter函数
 */
@@ -152,7 +152,6 @@ func motionBlur(radius: Float = 20, angle: Float = 0) -> Filter {
 白点调整
 
 :param: color 色彩，默认值不透明白色(1, 1, 1, 1)
-:param: contrast 对比度，有效范围[0, 200]
 
 :returns: Filter函数
 */
@@ -166,5 +165,40 @@ func whitePointAdjust(color: UIColor) -> Filter {
     }
 }
 
+// MARK: 合成操作（CICategoryCompositeOperation）
 
+// MARK: 平铺特效（CICategoryTileEffect）
 
+/**
+CIAffineClamp
+
+:param: transform
+
+:returns: Filter函数
+*/
+func affineClamp(transform: CGAffineTransform) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputTransformKey: NSValue(CGAffineTransform: transform)]
+        let filter = CIFilter(name: "CIAffineClamp", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+/**
+CIAffineTile
+
+:param: transform
+
+:returns: Filter函数
+*/
+func affineTile(transform: CGAffineTransform) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputTransformKey: NSValue(CGAffineTransform: transform)]
+        let filter = CIFilter(name: "CIAffineTile", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
