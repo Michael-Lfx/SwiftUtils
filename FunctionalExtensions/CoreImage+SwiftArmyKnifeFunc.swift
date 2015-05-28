@@ -167,6 +167,64 @@ func whitePointAdjust(color: UIColor) -> Filter {
 
 // MARK: 合成操作（CICategoryCompositeOperation）
 
+// MARK: 色彩特效（CICategoryColorEffect）
+
+/**
+CISepiaTone
+
+:param: intensity 强度，有效值[0, 1]
+
+:returns: Filter函数
+*/
+func sepiaTone(intensity: Float = 1) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputIntensityKey: intensity]
+        let filter = CIFilter(name: "CISepiaTone", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+/**
+CIVignette
+
+:param: intensity 强度，有效值[-1, 1]
+:param: radius 半径，有效值[0, 2]
+
+:returns: Filter函数
+*/
+func vignette(intensity: Float = 0, radius: Float = 1) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputIntensityKey: intensity,
+            kCIInputRadiusKey: radius]
+        let filter = CIFilter(name: "CIVignette", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+/**
+CIColorClamp
+
+:param: inputMinComponents
+:param: inputMaxComponents
+
+:returns: Filter函数
+*/
+func colorClamp(min: CIVector, max: CIVector) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            "inputMinComponents": min,
+            "inputMaxComponents": max]
+        let filter = CIFilter(name: "CIColorClamp", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+
 // MARK: 平铺特效（CICategoryTileEffect）
 
 /**
