@@ -224,6 +224,20 @@ func colorClamp(min: CIVector, max: CIVector) -> Filter {
     }
 }
 
+/**
+CIColorInvert
+
+:returns: Filter函数
+*/
+func colorInvert() -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage]
+        let filter = CIFilter(name: "CIColorInvert", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
 
 // MARK: 平铺特效（CICategoryTileEffect）
 
@@ -257,6 +271,27 @@ func affineTile(transform: CGAffineTransform) -> Filter {
             kCIInputImageKey: inputImage,
             kCIInputTransformKey: NSValue(CGAffineTransform: transform)]
         let filter = CIFilter(name: "CIAffineTile", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+/**
+CIEightfoldReflectedTile
+
+:param: angle 模糊角度，有效范围[-3.141592653589793, 3.141592653589793]
+:param: width，有效范围[1, 200]
+:param: center，默认值(150, 150)
+
+:returns: Filter函数
+*/
+func eightfoldReflectedTile(angle: Float = 0, width: Float = 100, center: CGPoint = CGPoint(x: 150, y: 150)) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputAngleKey: angle,
+            kCIInputCenterKey: CIVector(CGPoint: center),
+            kCIInputWidthKey: width]
+        let filter = CIFilter(name: "CIEightfoldReflectedTile", withInputParameters: parameters)
         return filter.outputImage
     }
 }
