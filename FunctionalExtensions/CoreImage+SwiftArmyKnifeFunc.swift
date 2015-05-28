@@ -20,22 +20,7 @@ func >>> <T, U, V>(lhs: T -> U, rhs: U -> V) -> (T -> V) {
 
 public typealias Filter = CIImage -> CIImage
 
-/**
-高斯模糊滤镜（CIGaussianBlur）
-
-:param: radius 模糊半径
-
-:returns: Filter函数
-*/
-func blur(radius: Float) -> Filter {
-    return { inputImage in
-        let parameters = [
-            kCIInputImageKey: inputImage,
-            kCIInputRadiusKey: radius]
-        let filter = CIFilter(name: "CIGaussianBlur", withInputParameters: parameters)
-        return filter.outputImage
-    }
-}
+// MARK: 生成器（CICategoryGenerator）
 
 /**
 颜色生成滤镜（CIConstantColorGenerator）
@@ -46,7 +31,7 @@ func blur(radius: Float) -> Filter {
 */
 func colorGenerator(color: UIColor) -> Filter {
     return { _ in
-        let parameters = [ kCIInputColorKey: color]
+        let parameters = [ kCIInputColorKey: color ]
         let filter = CIFilter(name: "CIConstantColorGenerator", withInputParameters: parameters)
         return filter.outputImage
     }
@@ -80,6 +65,104 @@ func colorOverlay(color: UIColor) -> Filter {
     return { inputImage in
         let overlay = colorGenerator(color)(inputImage)
         return compositeSourceOver(overlay)(inputImage)
+    }
+}
+
+/**
+色彩控制
+
+:param: brightness 亮度，有效范围[-1, 1]
+:param: contrast 对比度，有效范围[0.25, 4]
+:param: saturation 饱和度，有效范围[0, 3]
+
+:returns: Filter函数
+*/
+func colorControls(brightness: Float = 0, contrast: Float = 1, saturation: Float = 3) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            "inputBrightness": brightness,
+            "inputContrast": contrast,
+            "inputSaturation": saturation]
+        let filter = CIFilter(name: "CIColorControls", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+// MARK: 模糊（CICategoryBlur）
+
+/**
+放大模糊（CIZoomBlur）
+
+:param: brightness 亮度，默认值[150 150]
+:param: contrast 对比度，有效范围[0, 200]
+
+:returns: Filter函数
+*/
+func zoomBlur(center: CIVector, radius: Float = 20) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputRadiusKey: radius,
+            kCIInputCenterKey: center]
+        let filter = CIFilter(name: "CIZoomBlur", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+/**
+高斯模糊滤镜（CIGaussianBlur）
+
+:param: radius 模糊半径，有效范围[0, 100]
+
+:returns: Filter函数
+*/
+func gaussianBlur(radius: Float = 10) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputRadiusKey: radius]
+        let filter = CIFilter(name: "CIGaussianBlur", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+/**
+动感模糊（CIMotionBlur）
+
+:param: radius 模糊半径，有效范围[0, 200]
+:param: angle 模糊角度，有效范围[-3.141592653589793, 3.141592653589793]
+
+:returns: Filter函数
+*/
+func motionBlur(radius: Float = 20, angle: Float = 0) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputRadiusKey: radius,
+            kCIInputAngleKey: angle]
+        let filter = CIFilter(name: "CIMotionBlur", withInputParameters: parameters)
+        return filter.outputImage
+    }
+}
+
+// MARK: 色彩调整（CICategoryColorAdjustment）
+
+/**
+白点调整
+
+:param: color 色彩，默认值不透明白色(1, 1, 1, 1)
+:param: contrast 对比度，有效范围[0, 200]
+
+:returns: Filter函数
+*/
+func whitePointAdjust(color: UIColor) -> Filter {
+    return { inputImage in
+        let parameters = [
+            kCIInputImageKey: inputImage,
+            kCIInputColorKey: color]
+        let filter = CIFilter(name: "CIWhitePointAdjust", withInputParameters: parameters)
+        return filter.outputImage
     }
 }
 
