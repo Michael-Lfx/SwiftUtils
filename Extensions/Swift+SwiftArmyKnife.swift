@@ -1,7 +1,17 @@
 import Foundation
 
+/**
+计算数组所占字节大小，如果数组第一个元素为空，则认为整个数组所占内存为0
+*/
+@inline(__always) func sizeofArray<T>(array: [T]) -> Int {
+    if let element = array.first {
+        return sizeofValue(element) * count(array)
+    }
+    return 0
+}
+
 extension String {
-    
+
     // MARK: Directory
     
     static func getDocumentDirectory() -> String! {
