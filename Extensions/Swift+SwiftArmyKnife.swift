@@ -5,7 +5,7 @@ import Foundation
 */
 @inline(__always) func sizeofArray<T>(array: [T]) -> Int {
     if let element = array.first {
-        return sizeofValue(element) * count(array)
+        return sizeofValue(element) * array.count
     }
     return 0
 }
